@@ -1,12 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import OrganizationMap from "@/components/OrganizationMap";
+import ProcessSteps from "@/components/ProcessSteps";
+import SolutionsSection from "@/components/SolutionsSection";
+import PrincipleSection from "@/components/PrincipleSection";
+import AccessSection from "@/components/AccessSection";
+import ContactSection from "@/components/ContactSection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <HeroSection />
+      <OrganizationMap />
+      <ProcessSteps />
+      <SolutionsSection />
+      <PrincipleSection />
+      <AccessSection />
+      <ContactSection />
+      <footer className="border-t border-border/30 py-8 text-center">
+        <p className="text-muted-foreground text-xs">
+          © {new Date().getFullYear()} MPE — Procesos, operaciones y sistemas
+        </p>
+      </footer>
     </div>
   );
 };
