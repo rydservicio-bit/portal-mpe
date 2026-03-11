@@ -30,11 +30,11 @@ interface OtdrEvent {
 }
 
 const eventTypeLabels: Record<EventType, string> = {
-  splice: "Splice",
-  connector: "Connector",
+  splice: "Empalme",
+  connector: "Conector",
   splitter: "Splitter",
-  break: "Break",
-  "end of fiber": "End of Fiber",
+  break: "Corte de fibra",
+  "end of fiber": "Fin de fibra",
 };
 
 const OtdrAnalysis = () => {
