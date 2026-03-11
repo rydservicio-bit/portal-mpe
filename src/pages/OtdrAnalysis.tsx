@@ -200,7 +200,7 @@ const OtdrAnalysis = () => {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-heading text-sm font-semibold text-foreground">
-                      Event #{index + 1}
+                      Evento #{index + 1}
                     </span>
                     <Button
                       variant="ghost"
