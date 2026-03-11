@@ -9,6 +9,7 @@ const navItems = [
   { label: "Soluciones", href: "#soluciones" },
   { label: "Acceso", href: "#acceso" },
   { label: "Contacto", href: "#contacto" },
+  { label: "OTDR", href: "/otdr", isRoute: true },
 ];
 
 const Navbar = () => {
