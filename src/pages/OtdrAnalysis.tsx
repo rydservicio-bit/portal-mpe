@@ -114,11 +114,11 @@ const OtdrAnalysis = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="border-border/30 bg-muted/30">
-                    <TableHead className="w-16 text-center">#</TableHead>
-                    <TableHead>Distance (km)</TableHead>
-                    <TableHead>Loss (dB)</TableHead>
-                    <TableHead>Reflectance (dB)</TableHead>
-                    <TableHead>Event Type</TableHead>
+                    <TableHead className="w-16 text-center">Evento</TableHead>
+                    <TableHead>Distancia (km)</TableHead>
+                    <TableHead>Pérdida (dB)</TableHead>
+                    <TableHead>Reflectancia (dB)</TableHead>
+                    <TableHead>Tipo de evento</TableHead>
                     <TableHead className="w-16" />
                   </TableRow>
                 </TableHeader>
