@@ -213,7 +213,7 @@ const OtdrAnalysis = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Distance (km)</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Distancia (km)</label>
                       <Input
                         type="number"
                         step="0.001"
