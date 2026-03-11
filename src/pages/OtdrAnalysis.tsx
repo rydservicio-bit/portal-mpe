@@ -78,9 +78,9 @@ const OtdrAnalysis = () => {
           </Link>
           <div>
             <h1 className="font-heading text-lg font-bold tracking-wider text-foreground">
-              OTDR Analysis
+              Análisis OTDR
             </h1>
-            <p className="text-xs text-muted-foreground">Event Table</p>
+            <p className="text-xs text-muted-foreground">Tabla de eventos</p>
           </div>
         </div>
       </header>
