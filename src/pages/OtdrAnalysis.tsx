@@ -30,11 +30,11 @@ interface OtdrEvent {
 }
 
 const eventTypeLabels: Record<EventType, string> = {
-  splice: "Splice",
-  connector: "Connector",
+  splice: "Empalme",
+  connector: "Conector",
   splitter: "Splitter",
-  break: "Break",
-  "end of fiber": "End of Fiber",
+  break: "Corte de fibra",
+  "end of fiber": "Fin de fibra",
 };
 
 const OtdrAnalysis = () => {
@@ -78,9 +78,9 @@ const OtdrAnalysis = () => {
           </Link>
           <div>
             <h1 className="font-heading text-lg font-bold tracking-wider text-foreground">
-              OTDR Analysis
+              Análisis OTDR
             </h1>
-            <p className="text-xs text-muted-foreground">Event Table</p>
+            <p className="text-xs text-muted-foreground">Tabla de eventos</p>
           </div>
         </div>
       </header>
@@ -89,22 +89,22 @@ const OtdrAnalysis = () => {
         {/* Actions */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            {events.length} event{events.length !== 1 && "s"}
+            {events.length} evento{events.length !== 1 && "s"}
           </p>
           <Button onClick={addEvent} size="sm" className="gap-2">
             <Plus size={16} />
-            Add Event
+            Agregar evento
           </Button>
         </div>
 
         {events.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/50 py-20">
             <p className="mb-4 text-sm text-muted-foreground">
-              No events yet. Add your first OTDR event.
+              Aún no hay eventos. Agrega tu primer evento OTDR.
             </p>
             <Button onClick={addEvent} variant="outline" size="sm" className="gap-2">
               <Plus size={16} />
-              Add Event
+              Agregar evento
             </Button>
           </div>
         ) : (
@@ -114,11 +114,11 @@ const OtdrAnalysis = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="border-border/30 bg-muted/30">
-                    <TableHead className="w-16 text-center">#</TableHead>
-                    <TableHead>Distance (km)</TableHead>
-                    <TableHead>Loss (dB)</TableHead>
-                    <TableHead>Reflectance (dB)</TableHead>
-                    <TableHead>Event Type</TableHead>
+                    <TableHead className="w-16 text-center">Evento</TableHead>
+                    <TableHead>Distancia (km)</TableHead>
+                    <TableHead>Pérdida (dB)</TableHead>
+                    <TableHead>Reflectancia (dB)</TableHead>
+                    <TableHead>Tipo de evento</TableHead>
                     <TableHead className="w-16" />
                   </TableRow>
                 </TableHeader>
@@ -200,7 +200,7 @@ const OtdrAnalysis = () => {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-heading text-sm font-semibold text-foreground">
-                      Event #{index + 1}
+                      Evento #{index + 1}
                     </span>
                     <Button
                       variant="ghost"
@@ -213,7 +213,7 @@ const OtdrAnalysis = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Distance (km)</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Distancia (km)</label>
                       <Input
                         type="number"
                         step="0.001"
@@ -224,7 +224,7 @@ const OtdrAnalysis = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Loss (dB)</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Pérdida (dB)</label>
                       <Input
                         type="number"
                         step="0.01"
@@ -235,7 +235,7 @@ const OtdrAnalysis = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Reflectance (dB)</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Reflectancia (dB)</label>
                       <Input
                         type="number"
                         step="0.01"
@@ -246,7 +246,7 @@ const OtdrAnalysis = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Event Type</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Tipo de evento</label>
                       <Select
                         value={event.eventType}
                         onValueChange={(v) => updateEvent(event.id, "eventType", v)}
