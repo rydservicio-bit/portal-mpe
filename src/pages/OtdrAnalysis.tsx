@@ -246,7 +246,7 @@ const OtdrAnalysis = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Event Type</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Tipo de evento</label>
                       <Select
                         value={event.eventType}
                         onValueChange={(v) => updateEvent(event.id, "eventType", v)}
