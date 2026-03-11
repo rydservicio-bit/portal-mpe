@@ -89,11 +89,11 @@ const OtdrAnalysis = () => {
         {/* Actions */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            {events.length} event{events.length !== 1 && "s"}
+            {events.length} evento{events.length !== 1 && "s"}
           </p>
           <Button onClick={addEvent} size="sm" className="gap-2">
             <Plus size={16} />
-            Add Event
+            Agregar evento
           </Button>
         </div>
 
