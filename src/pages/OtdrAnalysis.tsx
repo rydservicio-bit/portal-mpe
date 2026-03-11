@@ -100,11 +100,11 @@ const OtdrAnalysis = () => {
         {events.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/50 py-20">
             <p className="mb-4 text-sm text-muted-foreground">
-              No events yet. Add your first OTDR event.
+              Aún no hay eventos. Agrega tu primer evento OTDR.
             </p>
             <Button onClick={addEvent} variant="outline" size="sm" className="gap-2">
               <Plus size={16} />
-              Add Event
+              Agregar evento
             </Button>
           </div>
         ) : (
