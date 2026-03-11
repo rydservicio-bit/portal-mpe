@@ -1,41 +1,18 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Trash2, ArrowLeft } from "lucide-react";
+import { Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-
-type EventType = "splice" | "connector" | "splitter" | "break" | "end of fiber";
-
-interface OtdrEvent {
-  id: string;
-  distance: string;
-  loss: string;
-  reflectance: string;
-  eventType: EventType;
-}
-
-const eventTypeLabels: Record<EventType, string> = {
-  splice: "Empalme",
-  connector: "Conector",
-  splitter: "Splitter",
-  break: "Corte de fibra",
-  "end of fiber": "Fin de fibra",
-};
+import OtdrEventRow from "@/components/otdr/OtdrEventRow";
+import OtdrEventCard from "@/components/otdr/OtdrEventCard";
+import OtdrDiagnosisPanel from "@/components/otdr/OtdrDiagnosisPanel";
+import {
+  type OtdrEvent,
+  classifyAllEvents,
+  detectMainEvent,
+} from "@/lib/otdr-engine";
 
 const OtdrAnalysis = () => {
   const [events, setEvents] = useState<OtdrEvent[]>([]);
@@ -46,9 +23,11 @@ const OtdrAnalysis = () => {
       {
         id: crypto.randomUUID(),
         distance: "",
-        loss: "",
+        eventLoss: "",
         reflectance: "",
-        eventType: "splice",
+        cumulativeLoss: "",
+        attenuation: "",
+        isFiberEnd: false,
       },
     ]);
   }, []);
@@ -58,7 +37,7 @@ const OtdrAnalysis = () => {
   }, []);
 
   const updateEvent = useCallback(
-    (id: string, field: keyof Omit<OtdrEvent, "id">, value: string) => {
+    (id: string, field: string, value: string | boolean) => {
       setEvents((prev) =>
         prev.map((e) => (e.id === id ? { ...e, [field]: value } : e))
       );
@@ -66,9 +45,11 @@ const OtdrAnalysis = () => {
     []
   );
 
+  const classified = useMemo(() => classifyAllEvents(events), [events]);
+  const diagnosis = useMemo(() => detectMainEvent(classified), [classified]);
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/30 bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center gap-4 px-6">
           <Link to="/">
@@ -80,14 +61,14 @@ const OtdrAnalysis = () => {
             <h1 className="font-heading text-lg font-bold tracking-wider text-foreground">
               Análisis OTDR
             </h1>
-            <p className="text-xs text-muted-foreground">Tabla de eventos</p>
+            <p className="text-xs text-muted-foreground">Motor de diagnóstico de eventos</p>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 sm:px-6">
+      <main className="container mx-auto px-4 py-8 sm:px-6 space-y-8">
         {/* Actions */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
             {events.length} evento{events.length !== 1 && "s"}
           </p>
@@ -110,163 +91,38 @@ const OtdrAnalysis = () => {
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden md:block rounded-lg border border-border/30 overflow-hidden">
+            <div className="hidden lg:block rounded-lg border border-border/30 overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="border-border/30 bg-muted/30">
-                    <TableHead className="w-16 text-center">Evento</TableHead>
+                    <TableHead className="w-14 text-center">Evento</TableHead>
                     <TableHead>Distancia (km)</TableHead>
                     <TableHead>Pérdida (dB)</TableHead>
                     <TableHead>Reflectancia (dB)</TableHead>
-                    <TableHead>Tipo de evento</TableHead>
-                    <TableHead className="w-16" />
+                    <TableHead>Pérdida acum. (dB)</TableHead>
+                    <TableHead>Atenuación (dB/km)</TableHead>
+                    <TableHead className="text-center">Fin de fibra</TableHead>
+                    <TableHead>Clasificación</TableHead>
+                    <TableHead className="w-14" />
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {events.map((event, index) => (
-                    <TableRow key={event.id} className="border-border/30">
-                      <TableCell className="text-center font-mono text-muted-foreground text-sm">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          step="0.001"
-                          placeholder="0.000"
-                          value={event.distance}
-                          onChange={(e) => updateEvent(event.id, "distance", e.target.value)}
-                          className="h-9"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          value={event.loss}
-                          onChange={(e) => updateEvent(event.id, "loss", e.target.value)}
-                          className="h-9"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          value={event.reflectance}
-                          onChange={(e) => updateEvent(event.id, "reflectance", e.target.value)}
-                          className="h-9"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Select
-                          value={event.eventType}
-                          onValueChange={(v) => updateEvent(event.id, "eventType", v)}
-                        >
-                          <SelectTrigger className="h-9">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.entries(eventTypeLabels).map(([value, label]) => (
-                              <SelectItem key={value} value={value}>
-                                {label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-9 w-9 text-muted-foreground hover:text-destructive"
-                          onClick={() => removeEvent(event.id)}
-                        >
-                          <Trash2 size={16} />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                  {classified.map((event) => (
+                    <OtdrEventRow key={event.id} event={event} onUpdate={updateEvent} onRemove={removeEvent} />
                   ))}
                 </TableBody>
               </Table>
             </div>
 
             {/* Mobile cards */}
-            <div className="md:hidden space-y-4">
-              {events.map((event, index) => (
-                <div
-                  key={event.id}
-                  className="rounded-lg border border-border/30 bg-card p-4 space-y-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-heading text-sm font-semibold text-foreground">
-                      Evento #{index + 1}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                      onClick={() => removeEvent(event.id)}
-                    >
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Distancia (km)</label>
-                      <Input
-                        type="number"
-                        step="0.001"
-                        placeholder="0.000"
-                        value={event.distance}
-                        onChange={(e) => updateEvent(event.id, "distance", e.target.value)}
-                        className="h-9"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Pérdida (dB)</label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        value={event.loss}
-                        onChange={(e) => updateEvent(event.id, "loss", e.target.value)}
-                        className="h-9"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Reflectancia (dB)</label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        value={event.reflectance}
-                        onChange={(e) => updateEvent(event.id, "reflectance", e.target.value)}
-                        className="h-9"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Tipo de evento</label>
-                      <Select
-                        value={event.eventType}
-                        onValueChange={(v) => updateEvent(event.id, "eventType", v)}
-                      >
-                        <SelectTrigger className="h-9">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(eventTypeLabels).map(([value, label]) => (
-                            <SelectItem key={value} value={value}>
-                              {label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
+            <div className="lg:hidden space-y-4">
+              {classified.map((event) => (
+                <OtdrEventCard key={event.id} event={event} onUpdate={updateEvent} onRemove={removeEvent} />
               ))}
             </div>
+
+            {/* Diagnosis panel */}
+            {diagnosis && <OtdrDiagnosisPanel diagnosis={diagnosis} />}
           </>
         )}
       </main>
