@@ -25,15 +25,25 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.isRoute ? (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.label}
+              </a>
+            )
+          )}
         </div>
 
         {/* Mobile toggle */}
