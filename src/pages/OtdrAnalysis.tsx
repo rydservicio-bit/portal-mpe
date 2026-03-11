@@ -224,7 +224,7 @@ const OtdrAnalysis = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Loss (dB)</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">Pérdida (dB)</label>
                       <Input
                         type="number"
                         step="0.01"
