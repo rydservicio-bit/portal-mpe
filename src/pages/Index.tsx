@@ -6,6 +6,7 @@ import SolutionsSection from "@/components/SolutionsSection";
 import PrincipleSection from "@/components/PrincipleSection";
 import AccessSection from "@/components/AccessSection";
 import ContactSection from "@/components/ContactSection";
+import OtdrModule from "@/components/otdr/OtdrModule";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
       <SolutionsSection />
       <PrincipleSection />
       <AccessSection />
+      <OtdrModule />
       <ContactSection />
       <footer className="border-t border-border/30 py-8 text-center">
         <p className="text-muted-foreground text-xs">
