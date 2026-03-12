@@ -9,6 +9,7 @@ interface Props {
   event: ClassifiedEvent;
   onUpdate: (id: string, field: string, value: string | boolean) => void;
   onRemove: (id: string) => void;
+  analyzed: boolean;
 }
 
 const severityBadge: Record<string, string> = {
@@ -17,7 +18,7 @@ const severityBadge: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive border-destructive/30",
 };
 
-const OtdrEventRow = ({ event, onUpdate, onRemove }: Props) => (
+const OtdrEventRow = ({ event, onUpdate, onRemove, analyzed }: Props) => (
   <TableRow className="border-border/30">
     <TableCell className="text-center font-mono text-muted-foreground text-sm">
       {event.index}
@@ -46,11 +47,21 @@ const OtdrEventRow = ({ event, onUpdate, onRemove }: Props) => (
       <Switch checked={event.isFiberEnd}
         onCheckedChange={(v) => onUpdate(event.id, "isFiberEnd", v)} />
     </TableCell>
-    <TableCell>
-      <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap ${severityBadge[event.severity]}`}>
-        {event.classification}
-      </span>
-    </TableCell>
+    {analyzed && (
+      <>
+        <TableCell>
+          <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap ${severityBadge[event.severity]}`}>
+            {event.classification}
+          </span>
+        </TableCell>
+        <TableCell className="text-sm text-foreground/80 whitespace-nowrap">
+          {event.probableFault}
+        </TableCell>
+        <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+          {event.confidence}
+        </TableCell>
+      </>
+    )}
     <TableCell>
       <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-destructive"
         onClick={() => onRemove(event.id)}>

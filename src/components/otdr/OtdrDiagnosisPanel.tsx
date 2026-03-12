@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Zap } from "lucide-react";
+import { CheckCircle, Zap } from "lucide-react";
 import type { MainEventDiagnosis } from "@/lib/otdr-engine";
 
 interface Props {
