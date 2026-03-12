@@ -8,6 +8,7 @@ interface Props {
   event: ClassifiedEvent;
   onUpdate: (id: string, field: string, value: string | boolean) => void;
   onRemove: (id: string) => void;
+  analyzed: boolean;
 }
 
 const severityBadge: Record<string, string> = {
@@ -16,7 +17,7 @@ const severityBadge: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive border-destructive/30",
 };
 
-const OtdrEventCard = ({ event, onUpdate, onRemove }: Props) => (
+const OtdrEventCard = ({ event, onUpdate, onRemove, analyzed }: Props) => (
   <div className="rounded-lg border border-border/30 bg-card p-4 space-y-3">
     <div className="flex items-center justify-between">
       <span className="font-heading text-sm font-semibold text-foreground">Evento #{event.index}</span>
@@ -44,14 +45,34 @@ const OtdrEventCard = ({ event, onUpdate, onRemove }: Props) => (
       </div>
     </div>
 
-    <div>
-      <span className="text-xs text-muted-foreground">Clasificación</span>
-      <div className="mt-1">
-        <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] font-medium ${severityBadge[event.severity]}`}>
-          {event.classification}
-        </span>
+    {analyzed && (
+      <div className="space-y-2 pt-2 border-t border-border/20">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Clase:</span>
+          <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] font-medium ${severityBadge[event.severity]}`}>
+            {event.classification}
+          </span>
+        </div>
+        <div>
+          <span className="text-xs text-muted-foreground">Posible falla:</span>
+          <p className="text-sm text-foreground/80">{event.probableFault}</p>
+        </div>
+        <div>
+          <span className="text-xs text-muted-foreground">Confianza:</span>
+          <p className="text-sm text-foreground/80">{event.confidence}</p>
+        </div>
+        {event.evidence.length > 0 && (
+          <div>
+            <span className="text-xs text-muted-foreground">Evidencia:</span>
+            <ul className="mt-1 space-y-0.5">
+              {event.evidence.map((e, i) => (
+                <li key={i} className="text-xs text-foreground/60">• {e}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
-    </div>
+    )}
   </div>
 );
 
