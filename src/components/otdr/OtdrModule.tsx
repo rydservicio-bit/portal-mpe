@@ -2,9 +2,13 @@ import { motion } from "framer-motion";
 import { Activity } from "lucide-react";
 import OtdrTabs from "./OtdrTabs";
 
-const OtdrModule = () => (
-  <section id="otdr" className="relative py-16 sm:py-24">
-    <div className="container mx-auto px-4 sm:px-6">
+interface OtdrModuleProps {
+  embedded?: boolean;
+}
+
+const OtdrModule = ({ embedded = false }: OtdrModuleProps) => (
+  <section id="otdr" className={embedded ? "relative" : "relative py-16 sm:py-24"}>
+    <div className={embedded ? "" : "container mx-auto px-4 sm:px-6"}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
