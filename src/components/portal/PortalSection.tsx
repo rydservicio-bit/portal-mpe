@@ -18,49 +18,54 @@ const roles = [
 const PortalSection = () => {
   const [view, setView] = useState<PortalView>("menu");
 
+  // When a dashboard is active, render as full-screen overlay
+  if (view !== "menu") {
+    return (
+      <div className="fixed inset-0 z-40 bg-background overflow-y-auto">
+        <div className="container mx-auto px-4 sm:px-6 py-6">
+          <motion.div key={view} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <button
+              onClick={() => setView("menu")}
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+            >
+              <ArrowLeft size={16} /> Portal de usuarios
+            </button>
+            {view === "tecnicos" && <TecnicosDashboard />}
+            {view === "administrativos" && <AdminDashboard />}
+            {view === "oym" && <OmDashboard />}
+            {view === "clientes" && <ClientesDashboard />}
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section id="acceso" className="py-24 relative">
       <div className="container mx-auto px-4 sm:px-6">
-        <AnimatePresence mode="wait">
-          {view === "menu" ? (
-            <motion.div key="menu" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-              <div className="text-center mb-12">
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">Portal de usuarios</h2>
-                <p className="text-sm text-muted-foreground">Accesos y herramientas según perfil</p>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-4xl mx-auto">
-                {roles.map((r, i) => (
-                  <motion.button
-                    key={r.key}
-                    onClick={() => setView(r.key)}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 }}
-                    whileHover={{ y: -4 }}
-                    className="glass-card p-6 flex flex-col items-center gap-3 text-center hover:border-primary/50 transition-colors cursor-pointer"
-                  >
-                    <r.icon className="w-7 h-7 text-primary" />
-                    <span className="font-heading text-sm font-bold text-foreground">{r.label}</span>
-                    <span className="text-xs text-muted-foreground leading-tight">{r.desc}</span>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div key={view} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-              <button
-                onClick={() => setView("menu")}
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+        <motion.div key="menu" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">Portal de usuarios</h2>
+            <p className="text-sm text-muted-foreground">Accesos y herramientas según perfil</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-4xl mx-auto">
+            {roles.map((r, i) => (
+              <motion.button
+                key={r.key}
+                onClick={() => setView(r.key)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ y: -4 }}
+                className="glass-card p-6 flex flex-col items-center gap-3 text-center hover:border-primary/50 transition-colors cursor-pointer"
               >
-                <ArrowLeft size={16} /> Portal de usuarios
-              </button>
-              {view === "tecnicos" && <TecnicosDashboard />}
-              {view === "administrativos" && <AdminDashboard />}
-              {view === "oym" && <OmDashboard />}
-              {view === "clientes" && <ClientesDashboard />}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <r.icon className="w-7 h-7 text-primary" />
+                <span className="font-heading text-sm font-bold text-foreground">{r.label}</span>
+                <span className="text-xs text-muted-foreground leading-tight">{r.desc}</span>
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
