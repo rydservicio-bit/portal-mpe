@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Wrench, Briefcase, Settings, Users } from "lucide-react";
 import TecnicosDashboard from "./TecnicosDashboard";
@@ -20,9 +21,14 @@ const roles = [
 ];
 
 const PortalSection = ({ view, onViewChange }: PortalSectionProps) => {
+  // Scroll to top whenever a dashboard opens or closes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, [view]);
+
   if (view !== "menu") {
     return (
-      <section id="acceso" className="py-24 relative min-h-screen">
+      <div className="min-h-screen pt-8 pb-16">
         <div className="container mx-auto px-4 sm:px-6">
           <motion.div key={view} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <button
@@ -37,7 +43,7 @@ const PortalSection = ({ view, onViewChange }: PortalSectionProps) => {
             {view === "clientes" && <ClientesDashboard />}
           </motion.div>
         </div>
-      </section>
+      </div>
     );
   }
 
