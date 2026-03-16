@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeft, Wrench, Briefcase, Settings, Users } from "lucide-react";
 import TecnicosDashboard from "./TecnicosDashboard";
 import ClientesDashboard from "./ClientesDashboard";
@@ -8,6 +7,11 @@ import OmDashboard from "./OmDashboard";
 
 type PortalView = "menu" | "tecnicos" | "administrativos" | "oym" | "clientes";
 
+type PortalSectionProps = {
+  view: PortalView;
+  onViewChange: (view: PortalView) => void;
+};
+
 const roles = [
   { key: "tecnicos" as const, label: "Técnicos", icon: Wrench, desc: "Asignaciones, bitácora, OTDR y herramientas de campo" },
   { key: "administrativos" as const, label: "Administrativos", icon: Briefcase, desc: "Formularios, reportes y accesos internos" },
@@ -15,17 +19,14 @@ const roles = [
   { key: "clientes" as const, label: "Clientes", icon: Users, desc: "Escalamiento, seguimiento y documentos" },
 ];
 
-const PortalSection = () => {
-  const [view, setView] = useState<PortalView>("menu");
-
-  // When a dashboard is active, render as full-screen overlay
+const PortalSection = ({ view, onViewChange }: PortalSectionProps) => {
   if (view !== "menu") {
     return (
-      <div className="fixed inset-0 z-40 bg-background overflow-y-auto">
-        <div className="container mx-auto px-4 sm:px-6 py-6">
+      <section id="acceso" className="py-24 relative min-h-screen">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div key={view} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <button
-              onClick={() => setView("menu")}
+              onClick={() => onViewChange("menu")}
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
             >
               <ArrowLeft size={16} /> Portal de usuarios
@@ -36,7 +37,7 @@ const PortalSection = () => {
             {view === "clientes" && <ClientesDashboard />}
           </motion.div>
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -52,7 +53,7 @@ const PortalSection = () => {
             {roles.map((r, i) => (
               <motion.button
                 key={r.key}
-                onClick={() => setView(r.key)}
+                onClick={() => onViewChange(r.key)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
