@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import OrganizationMap from "@/components/OrganizationMap";
-import ProcessSteps from "@/components/ProcessSteps";
-import SolutionsSection from "@/components/SolutionsSection";
-import PrincipleSection from "@/components/PrincipleSection";
+#import HeroSection from "@/components/HeroSection";#
+#import OrganizationMap from "@/components/OrganizationMap";#
+#import ProcessSteps from "@/components/ProcessSteps";#
+#import SolutionsSection from "@/components/SolutionsSection";#
+#import PrincipleSection from "@/components/PrincipleSection";#
 import PortalSection from "@/components/portal/PortalSection";
-import ContactSection from "@/components/ContactSection";
+#import ContactSection from "@/components/ContactSection";#
 
 const Index = () => {
   const [portalView, setPortalView] = useState<"menu" | "tecnicos" | "administrativos" | "oym" | "clientes">("menu");
