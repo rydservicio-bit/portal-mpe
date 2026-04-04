@@ -20,7 +20,7 @@ const Index = () => {
       {!isPortalActive && <ProcessSteps />}
       {!isPortalActive && <SolutionsSection />}
       {!isPortalActive && <PrincipleSection />}
-      <PortalSection view={portalView} onViewChange={setPortalView} />
+      {isPortalActive && <PortalSection view={portalView} onViewChange={setPortalView} />}
       {!isPortalActive && <ContactSection />}
       {!isPortalActive && (
         <footer className="border-t border-border/30 py-8 text-center">
