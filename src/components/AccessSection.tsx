@@ -5,12 +5,12 @@ const cards = [
   {
     title: "Portal de usuarios",
     icon: Globe,
-    href: "https://access.domain.com",
+    href: "https://icetel.chiletelco.com",
   },
   {
     title: "Correo empresarial",
     icon: Mail,
-    href: "https://mail.domain.com",
+    href: "https://mail.chiletelco.com",
   },
 ];
 
