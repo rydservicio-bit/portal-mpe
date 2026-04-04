@@ -22,7 +22,7 @@ const Index = () => {
       {!isPortalActive && <PrincipleSection />}
       {isPortalActive && <PortalSection view={portalView} onViewChange={setPortalView} />}
       {!isPortalActive && <ContactSection />}
-      {!isPortalActive && (
+      {!isPortalActive && <AccesstSection />}
         <footer className="border-t border-border/30 py-8 text-center">
           <p className="text-muted-foreground text-xs">
             © {new Date().getFullYear()} MPE — Procesos, operaciones y sistemas
