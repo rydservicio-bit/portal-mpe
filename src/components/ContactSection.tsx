@@ -16,7 +16,7 @@ const ContactSection = () => {
             A veces una conversación clara es el primer paso para entender cómo mejorar un proceso.
           </p>
           <a
-            href="mailto:contacto@mpe.com"
+            href="mailto:rcampos@chiletelco.com"
             className="inline-block px-8 py-3 rounded-lg bg-primary text-primary-foreground font-body text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
           >
             Contactar
