@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
@@ -7,9 +8,9 @@ const navItems = [
   { label: "Enfoque", href: "#enfoque" },
   { label: "Arquitectura", href: "#arquitectura" },
   { label: "Soluciones", href: "#soluciones" },
+  { label: "Acceso", href: "#acceso" },
   { label: "Contacto", href: "#contacto" },
-  { label: "Acceso", href: "#Acceso"
-  },
+  { label: "OTDR", href: "/otdr", isRoute: true },
 ];
 
 const Navbar = () => {
@@ -22,23 +23,36 @@ const Navbar = () => {
           MPE
         </a>
 
+        {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.isRoute ? (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors duration-200"
+              >
+                {item.label}
+              </a>
+            )
+          )}
         </div>
 
+        {/* Mobile toggle */}
         <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -48,16 +62,27 @@ const Navbar = () => {
             className="md:hidden overflow-hidden border-t border-border/30 bg-background/95 backdrop-blur-xl"
           >
             <div className="flex flex-col gap-4 px-6 py-6">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item) =>
+                item.isRoute ? (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setOpen(false)}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                )
+              )}
             </div>
           </motion.div>
         )}
